@@ -3,7 +3,9 @@ from zipfile import ZipFile
 
 from repository.utils import path_to_osz_template
 
-def package(converted_osus: list[str], slot: str) -> BytesIO: # .osz bytes
+from converter.utils import int_to_hex_string
+
+def package(converted_osus: dict[int, str], slot: str) -> BytesIO: # .osz bytes
 
     packaged_osz_bytes: BytesIO = BytesIO()
 
@@ -17,12 +19,10 @@ def package(converted_osus: list[str], slot: str) -> BytesIO: # .osz bytes
             file_data = template_osz.read(item.filename)
             packaged_osz.writestr(item, file_data)
 
-        index = 1 # temporary
+        for seed, osu in converted_osus.items():
 
-        for osu in converted_osus:
-            
-            packaged_osz.writestr(f"convert {index}.osu", osu)
-            index += 1
+            filename = f"{int_to_hex_string(seed)}.osu"
+            packaged_osz.writestr(filename, osu)
 
         template_osz.close()
         packaged_osz.close()

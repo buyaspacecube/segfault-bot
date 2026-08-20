@@ -16,11 +16,13 @@ def generate(slot: str, diffs: int) -> BytesIO: # .osz bytes
     seed_range = range(0, 2**16)
     seeds = sample(seed_range, diffs)
 
-    converted_osus: list[str] = list()
+    converted_osus: dict[int, str] = dict()
 
     for i in range(diffs):
 
-        converted = convert(original_osu, seeds[i])
-        converted_osus.append(converted)
+        seed = seeds[i]
+
+        converted = convert(original_osu, seed)
+        converted_osus[seed] = converted
     
     return package(converted_osus, slot)
