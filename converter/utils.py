@@ -46,7 +46,7 @@ def flip_object_hitsound(dot_osu_line: str) -> str: # kat -> don and vice versa 
     attributes = dot_osu_line.split(',')
 
     # slider or spinner, ignore
-    if len(attributes) > len(HitObjectAttributes):
+    if len(attributes) != len(HitObjectAttributes):
         return dot_osu_line
 
     hitsound = attributes[HitObjectAttributes.HITSOUND]
