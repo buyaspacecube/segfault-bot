@@ -1,5 +1,5 @@
 from enum import Enum
-import random
+from random import seed as set_seed, choices
 
 #
 # gamemode stuff
@@ -45,7 +45,7 @@ def flip_object_hitsound(dot_osu_line: str) -> str: # kat -> don and vice versa 
 
     attributes = dot_osu_line.split(',')
 
-    # slider or spinner, ignore
+    # slider spinner or blank, ignore
     if len(attributes) != len(HitObjectAttributes):
         return dot_osu_line
 
@@ -73,5 +73,6 @@ def generate_object_flips(object_count: int, seed: int) -> list[bool]:
 
     options = [True, False]
 
-    random.seed(seed)
-    return random.choices(options, k = object_count)
+    set_seed(seed)
+    return choices(options, k = object_count)
+

@@ -2,10 +2,10 @@ from converter.utils import is_mode_taiko, append_seed_to_diffname, generate_obj
 
 def convert(original_osu: str, seed: int) -> str:
 
-    osu_lines: list[str] = original_osu.split('\n')
-
     object_flips: list[bool] = list()
     is_processing_objects = False
+
+    osu_lines: list[str] = original_osu.split('\n')
 
     line_index: int = -1
     object_index: int = -1
@@ -38,3 +38,4 @@ def convert(original_osu: str, seed: int) -> str:
 
     converted_osu = '\n'.join(osu_lines)
     return converted_osu
+

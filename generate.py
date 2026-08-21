@@ -26,3 +26,4 @@ def generate(slot: str, diffs: int) -> BytesIO: # .osz bytes
         converted_osus[seed] = converted
     
     return package(converted_osus, slot)
+
