@@ -1,4 +1,5 @@
 from io import BytesIO
+from discord import File
 
 from generator.utils import generate_seeds
 
@@ -7,8 +8,7 @@ from converter.convert import convert
 from repository.package import package
 from repository.utils import path_to_osu
 
-def generate(slot: str, diffs: int, seed: int = None) -> BytesIO: # .osz bytes
-
+def generate(slot: str, diffs: int, seed: int = None) -> File:
     original_osu: str = str()
 
     with open(path_to_osu(slot), mode='r', encoding='utf-8') as f:
@@ -25,5 +25,6 @@ def generate(slot: str, diffs: int, seed: int = None) -> BytesIO: # .osz bytes
         converted = convert(original_osu, seed)
         converted_osus[seed] = converted
     
-    return package(converted_osus, slot)
+    osz_bytes: BytesIO = package(converted_osus, slot)
+    return File(osz_bytes, filename="thing.osz")
 
