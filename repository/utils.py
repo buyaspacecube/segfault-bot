@@ -1,8 +1,9 @@
 from pathlib import Path
+from pandas import read_csv
 
 def path_to_osu(slot: str) -> str:
 
-    path = Path() / "repository" / "osu" / f"{slot}.osu"
+    path = Path() / "mappool" / "osu" / f"{slot}.osu"
 
     if not path.exists():
         raise OSError(".osu not found")
@@ -11,7 +12,7 @@ def path_to_osu(slot: str) -> str:
 
 def path_to_osz_template(slot: str) -> str:
 
-    path = Path() / "repository" / "osz_template" / f"{slot}.osz"
+    path = Path() / "mappool" / "osz_template" / f"{slot}.osz"
 
     if not path.exists():
         raise OSError(".osz template not found")
@@ -20,20 +21,8 @@ def path_to_osz_template(slot: str) -> str:
 
 def get_slots() -> list[str]:
 
-    osu_dir = Path() / "repository" / "osu"
-    files = osu_dir.iterdir()
-    
-    slots = [f.stem for f in files]
-    slots_sorted: list[str] = list()
+    path_to_mappool = Path() / "mappool" / "mappool.csv"
+    mappool = read_csv(path_to_mappool)
 
-    groups = ["NM", "HD", "HR", "FM", "EX"]
-
-    for group in groups:
-        
-        slots_in_group = [s for s in slots if s.startswith(group)]
-        list.sort(slots_in_group)
-        
-        slots_sorted += slots_in_group
-
-    return slots_sorted
+    return mappool['slot'].tolist()
 
