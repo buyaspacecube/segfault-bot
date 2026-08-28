@@ -45,9 +45,9 @@ async def bot_practice_diffs(ctx: ApplicationContext,
 @practice.command(name="seed", description="Generate a specific seed to practice")
 async def bot_practice_seed(ctx: ApplicationContext,
                        slot: slot_option,
-                       seed: int):
+                       seed: str):
 
-    seeds = [seed]
+    seeds = [int(seed, 16)]
     message, osz = get_message_and_osz(slot, seeds)
     
     await ctx.respond(message, file=osz, ephemeral=True)
