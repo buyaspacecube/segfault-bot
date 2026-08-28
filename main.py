@@ -1,11 +1,10 @@
-from discord import Bot, ApplicationContext, File
+from discord import Bot, ApplicationContext
 
 from dotenv import load_dotenv
 from os import getenv
 
-from utils import get_slot_option
+from utils import get_slot_option, get_message_and_osz
 from converter.utils import int_to_hex_string
-from generator.generate import generate
 from generator.utils import generate_seeds
 
 bot = Bot()
@@ -24,9 +23,9 @@ async def bot_generate(ctx: ApplicationContext,
                        slot: slot_option):
 
     seeds = generate_seeds(1)
-    osz: File = generate(slot, 1, seeds)
+    message, osz = get_message_and_osz(slot, 1, seeds)
     
-    await ctx.respond(file=osz)
+    await ctx.respond(message, file=osz)
 
 #
 # practice commands (for players)
@@ -39,9 +38,9 @@ async def bot_practice_diffs(ctx: ApplicationContext,
                        diffs: int):
 
     seeds = generate_seeds(diffs)
-    osz: File = generate(slot, diffs, seeds)
+    message, osz = get_message_and_osz(slot, diffs, seeds)
     
-    await ctx.respond(file=osz, ephemeral=True)
+    await ctx.respond(message, file=osz, ephemeral=True)
 
 @practice.command(name="seed", description="Generate a specific seed to practice")
 async def bot_practice_seed(ctx: ApplicationContext,
@@ -49,9 +48,9 @@ async def bot_practice_seed(ctx: ApplicationContext,
                        seed: int):
 
     seeds = [seed]
-    osz: File = generate(slot, 1, seeds)
+    message, osz = get_message_and_osz(slot, 1, seeds)
     
-    await ctx.respond(file=osz, ephemeral=True)
+    await ctx.respond(message, file=osz, ephemeral=True)
 
 #
 # run
