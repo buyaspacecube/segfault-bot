@@ -6,7 +6,7 @@ from generator.utils import generate_seeds
 from converter.convert import convert
 
 from repository.package import package
-from repository.utils import path_to_osu
+from repository.utils import path_to_osu, get_name_for_packaged_osz
 
 def generate(slot: str, diffs: int, seed: int = None) -> File:
     original_osu: str = str()
@@ -26,5 +26,7 @@ def generate(slot: str, diffs: int, seed: int = None) -> File:
         converted_osus[seed] = converted
     
     osz_bytes: BytesIO = package(converted_osus, slot)
-    return File(osz_bytes, filename="thing.osz")
+    filename = get_name_for_packaged_osz(slot)
+
+    return File(osz_bytes, filename=filename)
 
