@@ -23,7 +23,7 @@ async def bot_generate(ctx: ApplicationContext,
                        slot: slot_option):
 
     seeds = generate_seeds(1)
-    message, osz = get_message_and_osz(slot, 1, seeds)
+    message, osz = get_message_and_osz(slot, seeds)
     
     await ctx.respond(message, file=osz)
 
@@ -38,7 +38,7 @@ async def bot_practice_diffs(ctx: ApplicationContext,
                        diffs: int):
 
     seeds = generate_seeds(diffs)
-    message, osz = get_message_and_osz(slot, diffs, seeds)
+    message, osz = get_message_and_osz(slot, seeds)
     
     await ctx.respond(message, file=osz, ephemeral=True)
 
@@ -48,7 +48,7 @@ async def bot_practice_seed(ctx: ApplicationContext,
                        seed: int):
 
     seeds = [seed]
-    message, osz = get_message_and_osz(slot, 1, seeds)
+    message, osz = get_message_and_osz(slot, seeds)
     
     await ctx.respond(message, file=osz, ephemeral=True)
 

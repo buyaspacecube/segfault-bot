@@ -6,7 +6,7 @@ from converter.convert import convert
 from repository.package import package
 from repository.utils import path_to_osu, get_name_for_packaged_osz
 
-def generate(slot: str, diffs: int, seeds: list[int]) -> File:
+def generate(slot: str, seeds: list[int]) -> File:
     original_osu: str = str()
 
     with open(path_to_osu(slot), mode='r', encoding='utf-8') as f:
@@ -14,9 +14,7 @@ def generate(slot: str, diffs: int, seeds: list[int]) -> File:
 
     converted_osus: dict[int, str] = dict()
 
-    for i in range(diffs):
-
-        seed = seeds[i]
+    for seed in seeds:
 
         converted = convert(original_osu, seed)
         converted_osus[seed] = converted

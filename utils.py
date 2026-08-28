@@ -13,12 +13,12 @@ def get_slot_option() -> Option:
         choices = get_slots()
     )
 
-def get_message_and_osz(slot: str, diffs: int, seeds: list[int]) -> (str, File):
+def get_message_and_osz(slot: str, seeds: list[int]) -> (str, File):
 
     str_seeds = [int_to_hex_string(seed) for seed in seeds]
-    s = "s" if diffs > 1 else ""
+    s = "s" if len(seeds) > 1 else ""
     
     message: str = f"Generated seed{s} **{', '.join(str_seeds)}**"
-    osz: File = generate(slot, diffs, seeds)
+    osz: File = generate(slot, seeds)
 
     return (message, osz)
