@@ -4,7 +4,9 @@ from dotenv import load_dotenv
 from os import getenv
 
 from utils import get_slot_option
+from converter.utils import int_to_hex_string
 from generator.generate import generate
+from generator.utils import generate_seeds
 
 bot = Bot()
 
@@ -21,7 +23,9 @@ slot_option = get_slot_option()
 async def bot_generate(ctx: ApplicationContext,
                        slot: slot_option):
 
-    osz: File = generate(slot, 1)
+    seeds = generate_seeds(1)
+    osz: File = generate(slot, 1, seeds)
+    
     await ctx.respond(file=osz)
 
 #
@@ -34,7 +38,9 @@ async def bot_practice_diffs(ctx: ApplicationContext,
                        slot: slot_option,
                        diffs: int):
 
-    osz: File = generate(slot, diffs)
+    seeds = generate_seeds(diffs)
+    osz: File = generate(slot, diffs, seeds)
+    
     await ctx.respond(file=osz, ephemeral=True)
 
 @practice.command(name="seed", description="Generate a specific seed to practice")
@@ -42,7 +48,9 @@ async def bot_practice_seed(ctx: ApplicationContext,
                        slot: slot_option,
                        seed: int):
 
-    osz: File = generate(slot, 1, seed)
+    seeds = [seed]
+    osz: File = generate(slot, 1, seeds)
+    
     await ctx.respond(file=osz, ephemeral=True)
 
 #
