@@ -1,32 +1,13 @@
 from enum import Enum
-from random import seed as set_seed, choices
 
-#
-# gamemode stuff
-#
+from utils.hex_utils import int_to_hex_string
+
 class Gamemode(int, Enum):
     OSU = 0
     TAIKO = 1
     CATCH = 2
     MANIA = 3
 
-def is_mode_taiko(dot_osu_line: str) -> bool:
-    
-    k, _, mode_str = dot_osu_line.partition(':')
-    return int(mode_str) == Gamemode.TAIKO
-
-#
-# diffname stuff
-#
-def int_to_hex_string(i: int):
-    return "0x" + f"{i:X}".zfill(4)
-
-def append_seed_to_diffname(line: str, seed: int) -> str:
-    return f"{line.strip()} {int_to_hex_string(seed)}\n"
-
-#
-# hitsound stuff
-#
 class HitObjectAttributes(int, Enum):
     X = 0
     Y = 1
@@ -41,6 +22,18 @@ class HitsoundBits(int, Enum):
     FINISH = 4
     CLAP = 8
 
+def is_mode_taiko(dot_osu_line: str) -> bool:
+
+    k, _, mode_str = dot_osu_line.partition(':')
+    return int(mode_str) == Gamemode.TAIKO
+
+def append_seed_to_diffname(dot_osu_line: str, seed: int) -> str:
+
+    line_str = dot_osu_line.strip()
+    seed_str = int_to_hex_string(seed)
+
+    return f"{line_str} {seed_str}\n"
+
 def flip_object_hitsound(dot_osu_line: str) -> str: # kat -> don and vice versa (preserving finisher)
 
     attributes = dot_osu_line.split(',')
@@ -50,11 +43,11 @@ def flip_object_hitsound(dot_osu_line: str) -> str: # kat -> don and vice versa 
         return dot_osu_line
 
     hitsound = attributes[HitObjectAttributes.HITSOUND]
-    attributes[HitObjectAttributes.HITSOUND] = flip_hitsound(hitsound)
+    attributes[HitObjectAttributes.HITSOUND] = _get_flipped_hitsound(hitsound)
 
     return ','.join(attributes)
 
-def flip_hitsound(hitsound_str: str) -> str:
+def _get_flipped_hitsound(hitsound_str: str) -> str:
     
     hitsound = int(hitsound_str)
 
@@ -65,14 +58,3 @@ def flip_hitsound(hitsound_str: str) -> str:
         return str(hitsound - HitsoundBits.WHISTLE)
 
     return str(hitsound + HitsoundBits.CLAP)
-
-#
-# generate list of true and false determining which objects get flipped
-#
-def generate_object_flips(object_count: int, seed: int) -> list[bool]:
-
-    options = [True, False]
-
-    set_seed(seed)
-    return choices(options, k = object_count)
-

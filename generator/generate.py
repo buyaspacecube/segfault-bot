@@ -2,9 +2,9 @@ from io import BytesIO
 from discord import File
 
 from converter.convert import convert
-
 from repository.package import package
-from repository.utils import path_to_osu, get_name_for_packaged_osz
+from repository.path import path_to_osu
+from repository.getters import get_name_for_packaged_osz
 
 def generate(slot: str, seeds: list[int]) -> File:
     original_osu: str = str()
@@ -23,4 +23,3 @@ def generate(slot: str, seeds: list[int]) -> File:
     filename = get_name_for_packaged_osz(slot)
 
     return File(osz_bytes, filename=filename)
-

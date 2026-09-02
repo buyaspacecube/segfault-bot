@@ -1,11 +1,11 @@
-from discord import Bot, ApplicationContext
+from discord import Bot, ApplicationContext, File
 
 from dotenv import load_dotenv
 from os import getenv
 
-from utils import get_slot_option, get_message_and_osz
-from converter.utils import int_to_hex_string
-from generator.utils import generate_seeds
+from utils.discord_utils import get_slot_option, get_generated_seeds_message
+from utils.RNG_utils import generate_seeds
+from generator.generate import generate
 
 bot = Bot()
 
@@ -23,7 +23,9 @@ async def bot_generate(ctx: ApplicationContext,
                        slot: slot_option):
 
     seeds = generate_seeds(1)
-    message, osz = get_message_and_osz(slot, seeds)
+
+    message: str = get_generated_seeds_message(seeds)
+    osz: File = generate(slot, seeds)
     
     await ctx.respond(message, file=osz)
 
@@ -38,7 +40,9 @@ async def bot_practice_diffs(ctx: ApplicationContext,
                        diffs: int):
 
     seeds = generate_seeds(diffs)
-    message, osz = get_message_and_osz(slot, seeds)
+
+    message: str = get_generated_seeds_message(seeds)
+    osz: File = generate(slot, seeds)
     
     await ctx.respond(message, file=osz, ephemeral=True)
 
@@ -48,7 +52,9 @@ async def bot_practice_seed(ctx: ApplicationContext,
                        seed: str):
 
     seeds = [int(seed, 16)]
-    message, osz = get_message_and_osz(slot, seeds)
+
+    message: str = get_generated_seeds_message(seeds)
+    osz: File = generate(slot, seeds)
     
     await ctx.respond(message, file=osz, ephemeral=True)
 

@@ -1,4 +1,5 @@
-from converter.utils import is_mode_taiko, append_seed_to_diffname, generate_object_flips, flip_object_hitsound
+from utils.dot_osu_utils import is_mode_taiko, append_seed_to_diffname, flip_object_hitsound
+from utils.RNG_utils import generate_flips
 
 def convert(original_osu: str, seed: int) -> str:
 
@@ -24,7 +25,7 @@ def convert(original_osu: str, seed: int) -> str:
         if line.startswith('[HitObjects]'):
 
             object_count = len(osu_lines) - line_index
-            object_flips = generate_object_flips(object_count, seed)
+            object_flips = generate_flips(object_count, seed)
 
             is_processing_objects = True
             continue
@@ -38,4 +39,3 @@ def convert(original_osu: str, seed: int) -> str:
 
     converted_osu = '\n'.join(osu_lines)
     return converted_osu
-
