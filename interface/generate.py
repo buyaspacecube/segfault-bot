@@ -13,7 +13,7 @@ class Generate(Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @slash_command(name="generate", description="Generate a difficulty of the given slot")
+    @slash_command(name="generate", description="Generate a seed of the given slot")
     async def command_generate(self, ctx,
                                slot: slot_option):
 
@@ -24,9 +24,9 @@ class Generate(Cog):
         
         await ctx.respond(message, file=osz)
 
-    practice = SlashCommandGroup(name="practice", description="Generate difficulties without anyone else seeing")
+    practice = SlashCommandGroup(name="practice")
 
-    @practice.command(name="diffs", description="Generate a number of difficulties to practice")
+    @practice.command(name="diffs", description="Generate a number of seeds without anyone else seeing")
     async def command_practice_diffs(self, ctx,
                              slot: slot_option,
                              diffs: diffs_option):
@@ -38,7 +38,7 @@ class Generate(Cog):
         
         await ctx.respond(message, file=osz, ephemeral=True)
 
-    @practice.command(name="seed", description="Generate a specific seed to practice")
+    @practice.command(name="seed", description="Generate a specific seed without anyone else seeing")
     async def command_practice_seed(self, ctx,
                             slot: slot_option,
                             seed: seed_option):
