@@ -1,4 +1,4 @@
-from utils.hex_utils import int_to_hex_string
+from hexadecimal.int_to_hex_string import int_to_hex_string
 
 def get_generated_seeds_message(seeds: list[int]) -> str:
 

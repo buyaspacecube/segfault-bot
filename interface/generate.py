@@ -3,8 +3,8 @@ from discord.ext.commands import Cog
 
 from interface.options import get_slot_option, get_diffs_option, get_seed_option
 from interface.permissions import get_referee_permissions
-from utils.discord_utils import get_generated_seeds_message
-from utils.RNG_utils import generate_seeds
+from interface.get_generated_seeds_message import get_generated_seeds_message
+from RNG.generate_seeds import generate_seeds
 from generator.generate import generate
 
 slot_option, diffs_option, seed_option = get_slot_option(), get_diffs_option(), get_seed_option()

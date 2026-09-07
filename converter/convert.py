@@ -1,5 +1,6 @@
-from utils.dot_osu_utils import is_mode_taiko, append_seed_to_diffname, flip_object_hitsound
-from utils.RNG_utils import generate_flips
+from dot_osu.other import is_mode_taiko, append_seed_to_diffname
+from dot_osu.flip_object_hitsound import flip_object_hitsound
+from RNG.generate_flips import generate_flips
 
 def convert(original_osu: str, seed: int) -> str:
 

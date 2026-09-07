@@ -2,7 +2,7 @@ from io import BytesIO
 from zipfile import ZipFile
 
 from repository.path import path_to_osz_template
-from utils.hex_utils import int_to_hex_string
+from hexadecimal.int_to_hex_string import int_to_hex_string
 
 def package(converted_osus: dict[int, str], slot: str) -> BytesIO: # .osz bytes
 
