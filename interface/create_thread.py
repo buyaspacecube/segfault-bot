@@ -2,9 +2,12 @@ from discord import slash_command, SlashCommandGroup
 from discord.ext.commands import Cog
 
 from interface.options import get_player_option, get_streamer_option
+from interface.permissions import get_referee_permissions
 
 player1_option, player2_option = get_player_option(1), get_player_option(2)
 streamer_option = get_streamer_option()
+
+referee_permissions = get_referee_permissions()
 
 match_start_string = """
 {p1} and {p2}, your match is starting soon!
@@ -20,7 +23,11 @@ class CreateThread(Cog):
 
     create = SlashCommandGroup(name="create")
 
-    @create.command(name="thread", description="(REFEREE ONLY) Create the thread for a Segfault Cup match")
+    @create.command(
+        name = "thread",
+        description = "(REFEREE ONLY) Create the thread for a Segfault Cup match",
+        default_member_permissions = referee_permissions
+    )
     async def command_create_thread(self, ctx,
                                     player1: player1_option,
                                     player2: player2_option,
