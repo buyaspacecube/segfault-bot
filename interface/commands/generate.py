@@ -3,9 +3,10 @@ from discord.ext.commands import Cog
 
 from interface.options import get_slot_option, get_diffs_option, get_seed_option
 from interface.permissions import get_referee_permissions
-from interface.get_generated_seeds_message import get_generated_seeds_message
-from RNG.generate_seeds import generate_seeds
-from generator.generate import generate
+from interface.messages import get_generated_seeds_message
+
+from generator.get_seeds import get_seeds
+from generator.generate_osz import generate_osz
 
 slot_option, diffs_option, seed_option = get_slot_option(), get_diffs_option(), get_seed_option()
 referee_permissions = get_referee_permissions()
@@ -23,10 +24,10 @@ class Generate(Cog):
     async def command_generate(self, ctx,
                                slot: slot_option):
 
-        seeds = generate_seeds(1)
+        seeds = get_seeds(1)
 
         message: str = get_generated_seeds_message(seeds)
-        osz: File = generate(slot, seeds)
+        osz: File = generate_osz(slot, seeds)
         
         await ctx.respond(message, file=osz)
 
@@ -40,10 +41,10 @@ class Generate(Cog):
                              slot: slot_option,
                              diffs: diffs_option):
 
-        seeds = generate_seeds(diffs)
+        seeds = get_seeds(diffs)
 
         message: str = get_generated_seeds_message(seeds)
-        osz: File = generate(slot, seeds)
+        osz: File = generate_osz(slot, seeds)
         
         await ctx.respond(message, file=osz, ephemeral=True)
 
@@ -59,7 +60,7 @@ class Generate(Cog):
         seeds = [seed_hex]
 
         message: str = get_generated_seeds_message(seeds)
-        osz: File = generate(slot, seeds)
+        osz: File = generate_osz(slot, seeds)
         
         await ctx.respond(message, file=osz, ephemeral=True)
 

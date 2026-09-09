@@ -1,6 +1,6 @@
-from dot_osu.other import is_mode_taiko, append_seed_to_diffname
-from dot_osu.flip_object_hitsound import flip_object_hitsound
-from RNG.generate_flips import generate_flips
+from generator.osz_bytes.dot_osu_utils.other import is_mode_taiko, append_seed_to_diffname
+from generator.osz_bytes.dot_osu_utils.flip_object_hitsound import flip_object_hitsound
+from generator.osz_bytes.get_flips import get_flips
 
 def convert(original_osu: str, seed: int) -> str:
 
@@ -26,7 +26,7 @@ def convert(original_osu: str, seed: int) -> str:
         if line.startswith('[HitObjects]'):
 
             object_count = len(osu_lines) - line_index
-            object_flips = generate_flips(object_count, seed)
+            object_flips = get_flips(object_count, seed)
 
             is_processing_objects = True
             continue

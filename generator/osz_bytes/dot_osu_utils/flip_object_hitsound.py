@@ -1,4 +1,4 @@
-from dot_osu.enums import HitObjectAttributes, HitsoundBits
+from generator.osz_bytes.dot_osu_utils.enums import HitObjectAttributes, HitsoundBits
 
 def flip_object_hitsound(dot_osu_line: str) -> str: # kat -> don and vice versa (preserving finisher)
 

@@ -1,4 +1,4 @@
-from dot_osu.enums import Gamemode
+from generator.osz_bytes.dot_osu_utils.enums import Gamemode
 from hexadecimal.int_to_hex_string import int_to_hex_string
 
 def is_mode_taiko(dot_osu_line: str) -> bool:

@@ -4,7 +4,7 @@ from zipfile import ZipFile
 from repository.path import path_to_osz_template
 from hexadecimal.int_to_hex_string import int_to_hex_string
 
-def package(converted_osus: dict[int, str], slot: str) -> BytesIO: # .osz bytes
+def package_osus_into_osz_bytes(converted_osus: dict[int, str], slot: str) -> BytesIO:
 
     packaged_osz_bytes: BytesIO = BytesIO()
 
