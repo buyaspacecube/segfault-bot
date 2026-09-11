@@ -5,7 +5,7 @@ from interface.options import get_slot_option, get_diffs_option, get_seed_option
 from interface.permissions import get_referee_permissions
 from interface.messages import get_generated_seeds_message
 
-from generator.get_seeds import get_seeds
+from generator.seeds import get_match_seeds, get_random_seeds
 from generator.generate_osz import generate_osz
 
 slot_option, diffs_option, seed_option = get_slot_option(), get_diffs_option(), get_seed_option()
@@ -16,6 +16,9 @@ class Generate(Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    #
+    # generate (for matches only)
+    #
     @slash_command(
         name="generate",
         description="(REFEREE ONLY) Generate a seed of the given slot to be played in match",
@@ -24,13 +27,20 @@ class Generate(Cog):
     async def command_generate(self, ctx,
                                slot: slot_option):
 
-        seeds = get_seeds(1)
+        match_ID = ctx.channel.id
+        all_seeds = get_match_seeds(match_ID)
+
+        seed = all_seeds[slot]
+        seeds = [seed]
 
         message: str = get_generated_seeds_message(seeds)
         osz: File = generate_osz(slot, seeds)
         
         await ctx.respond(message, file=osz)
 
+    #
+    # practice commands
+    #
     practice = SlashCommandGroup(name="practice")
 
     @practice.command(
@@ -41,7 +51,7 @@ class Generate(Cog):
                              slot: slot_option,
                              diffs: diffs_option):
 
-        seeds = get_seeds(diffs)
+        seeds = get_random_seeds(diffs)
 
         message: str = get_generated_seeds_message(seeds)
         osz: File = generate_osz(slot, seeds)
