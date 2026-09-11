@@ -4,7 +4,7 @@ from zipfile import ZipFile
 from generator.osz_bytes.generate_osz_bytes import generate_osz_bytes
 from repository.getters import get_name_for_packaged_osz
 
-def generate_pack_bytes(slots: list[str], seeds: list[int]) -> BytesIO:
+def generate_pack_bytes(slots: list[str], seeds: list[int], osu_only: bool = False) -> BytesIO:
 
     if len(slots) != len(seeds):
         raise ValueError("Slots and seeds must be same length")
@@ -14,7 +14,7 @@ def generate_pack_bytes(slots: list[str], seeds: list[int]) -> BytesIO:
 
     for slot, seed in zip(slots, seeds):
 
-        osz_bytes = generate_osz_bytes(slot, [seed])
+        osz_bytes = generate_osz_bytes(slot, [seed], osu_only)
         osz_data = osz_bytes.getvalue()
 
         filename = get_name_for_packaged_osz(slot)

@@ -4,26 +4,30 @@ from zipfile import ZipFile
 from repository.path import path_to_osz_template
 from hexadecimal.int_to_hex_string import int_to_hex_string
 
-def package_osus_into_osz_bytes(converted_osus: dict[int, str], slot: str) -> BytesIO:
+def package_osus_into_osz_bytes(converted_osus: dict[int, str], slot: str, osu_only: bool = False) -> BytesIO:
 
     packaged_osz_bytes: BytesIO = BytesIO()
 
     with open(path_to_osz_template(slot), mode='rb') as f:
 
-        template_osz: ZipFile = ZipFile(f)
         packaged_osz: ZipFile = ZipFile(packaged_osz_bytes, mode='w')
 
-        for item in template_osz.infolist():
+        if not osu_only:
 
-            file_data = template_osz.read(item.filename)
-            packaged_osz.writestr(item, file_data)
+            template_osz: ZipFile = ZipFile(f)
+
+            for item in template_osz.infolist():
+
+                file_data = template_osz.read(item.filename)
+                packaged_osz.writestr(item, file_data)
+
+            template_osz.close()
 
         for seed, osu in converted_osus.items():
 
             filename = f"{int_to_hex_string(seed)}.osu"
             packaged_osz.writestr(filename, osu)
-
-        template_osz.close()
+        
         packaged_osz.close()
 
     packaged_osz_bytes.seek(0)
