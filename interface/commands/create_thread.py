@@ -1,7 +1,8 @@
-from discord import slash_command, SlashCommandGroup
+from discord import slash_command, SlashCommandGroup, File
 from discord.ext.commands import Cog
 
 from generator.seeds import get_match_seeds
+from generator.generate_pack import generate_pack
 from interface.options import get_player_option, get_streamer_option
 from interface.permissions import get_referee_permissions
 from hexadecimal.int_to_hex_string import int_to_hex_string
@@ -25,6 +26,12 @@ Copy these using the copy button at the top right, then paste onto the ref sheet
 ```
 {seeds}
 ```
+"""
+
+streamer_pack_string = """
+Generated maps for **{title}**
+This includes .osu files ONLY! Make sure you already have the full mappool before downloading
+After downloading, restart your stable streaming client
 """
 
 class CreateThread(Cog):
@@ -65,11 +72,14 @@ class CreateThread(Cog):
         # DM seeds to referee
         #
         match_ID = message.id
-        seeds: dict[str, int] = get_match_seeds(match_ID)
+        slots_and_seeds = get_match_seeds(match_ID)
+
+        slots: list[str] = slots_and_seeds.keys()
+        seeds: list[int] = slots_and_seeds.values()
 
         seeds_string = '\n'.join([
             int_to_hex_string(seed)
-            for _, seed in seeds.items()
+            for seed in seeds
         ])
 
         referee_seeds_string_formatted = referee_seeds_string.format(
@@ -79,6 +89,17 @@ class CreateThread(Cog):
 
         await referee.send(referee_seeds_string_formatted)
 
+        #
+        # DM pack to streamer
+        #
+        pack: File = generate_pack(slots, seeds, osu_only=True)
+        
+        streamer_pack_string_formatted = streamer_pack_string.format(
+            title = match_title
+        )
+
+        await streamer.send(streamer_pack_string_formatted, file=pack)
+        
 # add to bot
 def setup(bot):
 
