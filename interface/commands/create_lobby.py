@@ -68,9 +68,13 @@ class CreateLobby(Cog):
         slots_and_seeds = get_match_seeds(match_ID)
         
         slots, seeds = slots_and_seeds.keys(), slots_and_seeds.values()
+        
+        seed_lists = [
+            [s] for s in seeds
+        ]
 
         await send_seeds_to_referee(ctx, match_title, seeds, referee)
-        await send_pack_to_streamer(ctx, match_title, slots, seeds, streamer)
+        await send_pack_to_streamer(ctx, match_title, slots, seed_lists, streamer)
 
     @create.command(
         name = "qualifiers",
