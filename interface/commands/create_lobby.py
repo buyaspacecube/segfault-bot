@@ -1,73 +1,44 @@
 from discord import slash_command, SlashCommandGroup, Member, Message, File
 from discord.ext.commands import Cog
 
-from generator.seeds import get_match_seeds
-from generator.generate_pack import generate_pack
+from interface.strings import get_lobby_created_message, get_referee_seeds_message, get_streamer_pack_message, int_to_hex_string
 from interface.options import get_player_option, get_streamer_option, get_lobby_ID_option
 from interface.permissions import get_referee_permissions
-from hexadecimal.int_to_hex_string import int_to_hex_string
 
-#
-# create thread
-#
+from generator.seeds import get_match_seeds
+from generator.generate_pack import generate_pack
+
 async def create_thread(ctx, title: str, is_match: bool, players: list[Member], **staff) -> Message:
-    
-    player_mentions = [p.mention for p in players]
-    staff_mentions: list[str] = list()
+
+    staff_dict: dict = dict()
 
     for role, member in staff.items():
 
         if type(member) != Member:
             raise TypeError("Input is not discord user")
 
-        staff_mentions.append(f"{member.mention} will be your {role}")
+        staff_dict[role] = member
 
-    player_string = ' '.join(player_mentions)
-    staff_string = '\n'.join(staff_mentions)
-
-    match_or_lobby = "match" if is_match else "lobby"
-
-    interaction = await ctx.respond(f"""
-{player_string} your {match_or_lobby} is starting soon!
-
-{staff_string}
-    """)
+    lobby_created_message = get_lobby_created_message(players, staff_dict, is_match)
+    interaction = await ctx.respond(lobby_created_message)
 
     message = await interaction.original_response()
     await message.create_thread(name=title)
     
     return message
 
-#
-# DM stuff to people
-#
 async def send_seeds_to_referee(ctx, title: str, seeds: list[int], referee: Member):
 
-    hex_seeds = [int_to_hex_string(s) for s in seeds]
-    seeds_string = '\n'.join(hex_seeds)
-
-    await referee.send(f"""
-Seeds for **{title}**
-Copy these using the copy button at the top right, then paste onto the ref sheet!
-
-```
-{seeds_string}
-```
-    """)
+    referee_seeds_message = get_referee_seeds_message(title, seeds)
+    await referee.send(referee_seeds_message)
 
 async def send_pack_to_streamer(ctx, title: str, slots: list[str], seeds: list[int], streamer: Member):
 
     pack: File = generate_pack(slots, seeds, osu_only=True)
+    streamer_pack_message = get_streamer_pack_message(title)
 
-    await streamer.send(f"""
-Generated maps for **{title}**
-This includes .osu files ONLY! Make sure you already have the full mappool before downloading
-After downloading, restart your stable streaming client
-    """, file=pack)
+    await streamer.send(streamer_pack_message, file=pack)
 
-#
-# commands
-#
 class CreateLobby(Cog):
 
     def __init__(self, bot):

@@ -1,8 +1,0 @@
-from hexadecimal.int_to_hex_string import int_to_hex_string
-
-def get_generated_seeds_message(seeds: list[int]) -> str:
-
-    str_seeds = [int_to_hex_string(seed) for seed in seeds]
-    s = "s" if len(seeds) > 1 else ""
-
-    return f"Generated seed{s} **{', '.join(str_seeds)}**"

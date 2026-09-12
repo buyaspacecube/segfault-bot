@@ -1,5 +1,5 @@
+from interface.strings import int_to_hex_string
 from generator.osz_bytes.dot_osu_utils.enums import Gamemode
-from hexadecimal.int_to_hex_string import int_to_hex_string
 
 def is_mode_taiko(dot_osu_line: str) -> bool:
 
@@ -12,4 +12,3 @@ def append_seed_to_diffname(dot_osu_line: str, seed: int) -> str:
     seed_str = int_to_hex_string(seed)
 
     return f"{line_str} {seed_str}\n"
-

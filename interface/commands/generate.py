@@ -3,7 +3,7 @@ from discord.ext.commands import Cog
 
 from interface.options import get_slot_option, get_diffs_option, get_seed_option
 from interface.permissions import get_referee_permissions
-from interface.messages import get_generated_seeds_message
+from interface.strings import get_generated_seeds_message
 
 from generator.seeds import get_match_seeds, get_random_seeds
 from generator.generate_osz import generate_osz
