@@ -26,15 +26,16 @@ def get_seed_option() -> Option:
         description = "The seed to generate (hexadecimal from 0000 to FFFF)"
     )
 
-def get_player_option(number: int) -> Option:
+def get_player_option(number: int, required: bool = True) -> Option:
 
-    if number != 1 and number != 2:
-        raise ValueError("Player number must be 1 or 2")
+    if number < 1 or number > 8:
+        raise ValueError("Player number must be 1-8")
 
     return Option(
         Member,
         name = f"player{number}",
-        description = f"The Discord username of player {number}"
+        description = f"The Discord username of player {number}",
+        required = required
     )
 
 def get_streamer_option() -> Option:
@@ -43,4 +44,12 @@ def get_streamer_option() -> Option:
         Member,
         name = "streamer",
         description = "The Discord username of the streamer"
+    )
+
+def get_lobby_ID_option() -> Option:
+
+    return Option(
+        int,
+        name = "lobby_id",
+        description = "The ID of the qualifiers lobby"
     )
