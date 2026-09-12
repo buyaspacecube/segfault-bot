@@ -11,6 +11,7 @@ async def on_ready():
 
 bot.load_extension('interface.commands.generate')
 bot.load_extension('interface.commands.create_lobby')
+bot.load_extension('interface.commands.publish_mappool')
 
 load_dotenv()
 token = getenv('TOKEN')

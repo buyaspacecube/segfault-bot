@@ -1,5 +1,7 @@
 from discord import Member
 
+from repository.getters import get_slots, get_full_title, get_beatmap_link
+
 def int_to_hex_string(i: int):
     return "0x" + f"{i:X}".zfill(4)
 
@@ -56,3 +58,70 @@ def get_streamer_pack_message(lobby_title: str) -> str:
     return streamer_pack_string.format(
         lobby_title = lobby_title
     )
+
+top_mappool_string = """
+# [Download practice pack](<{pack_link}>)
+
+{nomod_maps}
+** **
+"""
+
+middle_mappool_string = """
+{mod_maps}
+** **
+"""
+
+bottom_mappool_string = """
+{EX_maps}
+"""
+
+def get_square(slot: str) -> str:
+
+    if slot.startswith('NM'): return ":white_large_square:"
+    if slot.startswith('HD'): return ":yellow_square:"
+    if slot.startswith('HR'): return ":red_square:"
+    if slot.startswith('FM'): return ":blue_square:"
+    if slot.startswith('EX'): return ":purple_square:"
+
+    raise ValueError("Invalid slot")
+
+def get_map_string(slot: str) -> str:
+
+    square = get_square(slot)
+    title = get_full_title(slot)
+    link = get_beatmap_link(slot)
+
+    return f"{square} `{slot}` [{title}]({link})"
+
+def get_mappool_messages(practice_pack_link: str) -> list[str]:
+
+    slots = get_slots()
+
+    nomod_map_strings = [
+        get_map_string(s) for s in slots
+        if s.startswith('NM')
+    ]
+
+    mod_map_strings = [
+        get_map_string(s) for s in slots
+        if s.startswith('HD') or s.startswith('HR') or s.startswith('FM')
+    ]
+
+    EX_map_strings = [
+        get_map_string(s) for s in slots
+        if s.startswith('EX')
+    ]
+
+    # surely a nicer way to do this but whatever
+    return [
+        top_mappool_string.format(
+            pack_link = practice_pack_link,
+            nomod_maps = '\n'.join(nomod_map_strings)
+        ),
+        middle_mappool_string.format(
+            mod_maps = '\n'.join(mod_map_strings)
+        ),
+        bottom_mappool_string.format(
+            EX_maps = '\n'.join(EX_map_strings)
+        )
+    ]

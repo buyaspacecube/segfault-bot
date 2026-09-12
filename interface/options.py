@@ -53,3 +53,12 @@ def get_lobby_ID_option() -> Option:
         name = "lobby_id",
         description = "The ID of the qualifiers lobby"
     )
+
+def get_practice_pack_option() -> Option:
+
+    return Option(
+        str,
+        name = "practice_pack",
+        description = "The link to the uploaded practice pack",
+        required = False
+    )
