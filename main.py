@@ -10,7 +10,7 @@ async def on_ready():
     print(f"{bot.user} is alive")
 
 bot.load_extension('interface.commands.generate')
-bot.load_extension('interface.commands.create_thread')
+bot.load_extension('interface.commands.create_lobby')
 
 load_dotenv()
 token = getenv('TOKEN')
