@@ -15,7 +15,8 @@ def get_diffs_option() -> Option:
     return Option(
         int,
         name = "diffs",
-        description = "The number of seeds to generate"
+        description = "The number of seeds to generate",
+        min_value = 1, max_value = 5
     )
 
 def get_seed_option() -> Option:

@@ -11,6 +11,22 @@ from generator.generate_osz import generate_osz
 slot_option, diffs_option, seed_option = get_slot_option(), get_diffs_option(), get_seed_option()
 referee_permissions = get_referee_permissions()
 
+def seed_str_to_hex(seed: str) -> int:
+
+    seed_hex = int(seed, 16)
+
+    if seed_hex < 0 or seed_hex > (2**16 - 1):
+        raise ValueError("Seed must be hexadecimal 0000-FFFF")
+
+    return seed_hex
+
+async def generate_and_send(ctx, slot: str, seeds: list[int], ephemeral: bool = False):
+
+    osz: File = generate_osz(slot, seeds)
+    message: str = get_generated_seeds_message(seeds)
+
+    await ctx.respond(message, file=osz, ephemeral=ephemeral)
+
 class Generate(Cog):
 
     def __init__(self, bot):
@@ -33,10 +49,7 @@ class Generate(Cog):
         seed = all_seeds[slot]
         seeds = [seed]
 
-        message: str = get_generated_seeds_message(seeds)
-        osz: File = generate_osz(slot, seeds)
-        
-        await ctx.respond(message, file=osz)
+        await generate_and_send(ctx, slot, seeds)
 
     #
     # practice commands
@@ -53,10 +66,7 @@ class Generate(Cog):
 
         seeds = get_random_seeds(diffs)
 
-        message: str = get_generated_seeds_message(seeds)
-        osz: File = generate_osz(slot, seeds)
-        
-        await ctx.respond(message, file=osz, ephemeral=True)
+        await generate_and_send(ctx, slot, seeds, ephemeral=True)
 
     @practice.command(
         name="seed",
@@ -66,13 +76,10 @@ class Generate(Cog):
                             slot: slot_option,
                             seed: seed_option):
 
-        seed_hex = int(seed, 16)
+        seed_hex = seed_str_to_hex(seed)
         seeds = [seed_hex]
 
-        message: str = get_generated_seeds_message(seeds)
-        osz: File = generate_osz(slot, seeds)
-        
-        await ctx.respond(message, file=osz, ephemeral=True)
+        await generate_and_send(ctx, slot, seeds, ephemeral=True)
 
 # add to bot
 def setup(bot):
