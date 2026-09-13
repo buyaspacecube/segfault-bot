@@ -8,6 +8,8 @@ from generator.seeds import get_practice_seeds
 from generator.pack_bytes.generate_pack_bytes import generate_pack_bytes
 from repository.getters import get_slots
 
+admin_permissions = get_admin_permissions()
+
 async def generate_practice_pack(ctx):
 
     slots = get_slots()
@@ -34,12 +36,11 @@ class PracticePack(Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    publish = SlashCommandGroup(name="publish")
+    publish = SlashCommandGroup(name="publish", default_member_permissions = admin_permissions)
 
     @publish.command(
         name="mappool",
-        description="(ADMIN ONLY) Publish the mappool including practice pack",
-        default_member_permissions = get_admin_permissions()
+        description="(ADMIN ONLY) Publish the mappool including practice pack"
     )
     async def command_publish_mappool(self, ctx,
                                       practice_pack = get_practice_pack_option()

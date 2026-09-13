@@ -8,6 +8,8 @@ from interface.permissions import get_referee_permissions
 from generator.seeds import get_match_seeds
 from generator.generate_pack import generate_pack
 
+referee_permissions = get_referee_permissions()
+
 async def create_thread(ctx, title: str, is_match: bool, players: list[Member], **staff) -> Message:
 
     staff_dict: dict = dict()
@@ -44,12 +46,11 @@ class CreateLobby(Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    create = SlashCommandGroup(name="create")
+    create = SlashCommandGroup(name="create", default_member_permissions = referee_permissions)
 
     @create.command(
         name = "match",
-        description = "(REFEREE ONLY) Start a Segfault Cup match",
-        default_member_permissions = get_referee_permissions()
+        description = "(REFEREE ONLY) Start a Segfault Cup match"
     )
     async def command_create_match(self, ctx,
                                    player1: get_player_option(1),
@@ -78,8 +79,7 @@ class CreateLobby(Cog):
 
     @create.command(
         name = "qualifiers",
-        description = "(REFEREE ONLY) Start a Segfault Cup qualifiers lobby",
-        default_member_permissions = get_referee_permissions()
+        description = "(REFEREE ONLY) Start a Segfault Cup qualifiers lobby"
     )
     async def command_create_qualifiers(self, ctx,
                                         lobby_ID: get_lobby_ID_option(),
