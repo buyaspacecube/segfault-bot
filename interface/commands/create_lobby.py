@@ -1,5 +1,5 @@
 from discord import slash_command, SlashCommandGroup, Member, Message, File
-from discord.ext.commands import Cog
+from discord.ext.commands import Cog, guild_only
 
 from interface.strings import get_lobby_created_message, get_referee_seeds_message, get_streamer_pack_message, int_to_hex_string
 from interface.options import get_player_option, get_streamer_option, get_lobby_ID_option
@@ -52,6 +52,7 @@ class CreateLobby(Cog):
         name = "match",
         description = "(REFEREE ONLY) Start a Segfault Cup match"
     )
+    @guild_only()
     async def command_create_match(self, ctx,
                                    player1: get_player_option(1),
                                    player2: get_player_option(2),
@@ -81,6 +82,7 @@ class CreateLobby(Cog):
         name = "qualifiers",
         description = "(REFEREE ONLY) Start a Segfault Cup qualifiers lobby"
     )
+    @guild_only()
     async def command_create_qualifiers(self, ctx,
                                         lobby_ID: get_lobby_ID_option(),
                                         player1: get_player_option(1, required=True),  player2: get_player_option(2, required=False),

@@ -1,5 +1,5 @@
 from discord import slash_command, SlashCommandGroup
-from discord.ext.commands import Cog
+from discord.ext.commands import Cog, guild_only
 
 from interface.permissions import get_admin_permissions
 from interface.options import get_practice_pack_option
@@ -42,6 +42,7 @@ class PracticePack(Cog):
         name="mappool",
         description="(ADMIN ONLY) Publish the mappool including practice pack"
     )
+    @guild_only()
     async def command_publish_mappool(self, ctx,
                                       practice_pack = get_practice_pack_option()
                                       ):
