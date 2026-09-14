@@ -2,13 +2,15 @@ from discord import slash_command, SlashCommandGroup
 from discord.ext.commands import Cog, guild_only
 
 from interface.options import get_slot_option, get_diffs_option, get_seed_option
-from interface.permissions import get_referee_permissions
+from interface.permissions import get_base_permissions, get_referee_permissions
 from interface.strings import get_generated_seeds_message
 
 from generator.seeds import get_match_seeds, get_random_seeds
 from generator.generate_osz import generate_osz
 
 slot_option, diffs_option, seed_option = get_slot_option(), get_diffs_option(), get_seed_option()
+
+base_permissions = get_base_permissions()
 referee_permissions = get_referee_permissions()
 
 def seed_str_to_hex(seed: str) -> int:
@@ -55,7 +57,7 @@ class Generate(Cog):
     #
     # practice commands
     #
-    practice = SlashCommandGroup(name="practice")
+    practice = SlashCommandGroup(name="practice", default_member_permissions = base_permissions)
 
     @practice.command(
         name="diffs",
