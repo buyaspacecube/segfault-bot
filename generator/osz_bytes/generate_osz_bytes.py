@@ -4,7 +4,7 @@ from generator.osz_bytes.detarame_converter import convert
 from generator.osz_bytes.package_osus_into_osz_bytes import package_osus_into_osz_bytes
 from repository.path import path_to_osu
 
-def generate_osz_bytes(slot: str, seeds: list[int], osu_only: bool = False) -> BytesIO:
+def generate_osz_bytes(slot: str, seeds: list[int], osu_only: bool = False, is_match: bool = False) -> BytesIO:
 
     original_osu: str = str()
 
@@ -15,7 +15,7 @@ def generate_osz_bytes(slot: str, seeds: list[int], osu_only: bool = False) -> B
 
     for seed in seeds:
 
-        converted = convert(original_osu, seed)
+        converted = convert(original_osu, seed, is_match)
         converted_osus[seed] = converted
 
     return package_osus_into_osz_bytes(converted_osus, slot, osu_only)

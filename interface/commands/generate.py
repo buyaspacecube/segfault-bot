@@ -22,9 +22,9 @@ def seed_str_to_hex(seed: str) -> int:
 
     return seed_hex
 
-async def generate_and_send(ctx, slot: str, seeds: list[int], ephemeral: bool = False):
+async def generate_and_send(ctx, slot: str, seeds: list[int], is_match: bool = False, ephemeral: bool = False):
 
-    osz: File = generate_osz(slot, seeds)
+    osz: File = generate_osz(slot, seeds, is_match)
     message: str = get_generated_seeds_message(seeds)
 
     await ctx.respond(message, file=osz, ephemeral=ephemeral)
@@ -52,7 +52,7 @@ class Generate(Cog):
         seed = all_seeds[slot]
         seeds = [seed]
 
-        await generate_and_send(ctx, slot, seeds)
+        await generate_and_send(ctx, slot, seeds, is_match=True)
 
     #
     # practice commands

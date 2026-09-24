@@ -1,8 +1,10 @@
-from generator.osz_bytes.dot_osu_utils.other import is_mode_taiko, append_seed_to_diffname
+from generator.osz_bytes.dot_osu_utils.other import is_mode_taiko, append_to_line
 from generator.osz_bytes.dot_osu_utils.flip_object_hitsound import flip_object_hitsound
 from generator.osz_bytes.get_flips import get_flips
 
-def convert(original_osu: str, seed: int) -> str:
+from interface.strings import int_to_hex_string
+
+def convert(original_osu: str, seed: int, is_match: bool = False) -> str:
 
     object_flips: list[bool] = list()
     is_processing_objects = False
@@ -17,11 +19,20 @@ def convert(original_osu: str, seed: int) -> str:
         line_index += 1
 
         if line.startswith('Mode:'):
+            
             if not is_mode_taiko(line):
                 raise TypeError("Map must be taiko")
 
         if line.startswith('Version:'):
-            osu_lines[line_index] = append_seed_to_diffname(line, seed)
+
+            seed_hex = int_to_hex_string(seed)
+            osu_lines[line_index] = append_to_line(line, seed_hex)
+
+        if line.startswith('Tags:'):
+
+            match_tag = "?match" if is_match else ""
+            tags = f"?converted ?segfault {match_tag}"
+            osu_lines[line_index] = append_to_line(line, tags)
 
         if line.startswith('[HitObjects]'):
 
