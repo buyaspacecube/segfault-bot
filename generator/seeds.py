@@ -5,7 +5,7 @@ from repository.getters import get_slots
 full_range = range(0, 2**16)
 
 # arbitrarily chosen
-practice_seeds = [10782, 38831, 3366, 24974, 49061, 49360, 46106, 18885, 15259, 8068]
+practice_seeds = [10782, 38831, 3366, 24974, 49061]
 
 range_minus_practice = [s for s in full_range if s not in practice_seeds]
 
