@@ -18,7 +18,12 @@ def get_name_for_packaged_osz(slot: str) -> str:
         ['setID', 'artist', 'title']
     ].values.flatten().tolist()
 
-    return f"{setID} {artist} - {title}.osz"
+    name = f"{setID} {artist} - {title}.osz"
+
+    # remove characters that are weird in filenames
+    name_fixed = name.replace('?', '')
+
+    return name_fixed
 
 def get_full_title(slot: str) -> str:
 
