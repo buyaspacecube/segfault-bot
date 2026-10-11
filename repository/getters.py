@@ -8,6 +8,23 @@ def get_slots() -> list[str]:
 
     return mappool['slot'].tolist()
 
+def get_name_for_converted_osu(slot: str, seed: int) -> str:
+
+    path_to_mappool = Path() / "repository" / "mappool" / "mappool.csv"
+    mappool = read_csv(path_to_mappool)
+
+    artist, title = mappool.loc[
+        mappool['slot'] == slot,
+        ['artist', 'title']
+    ].values.flatten().tolist()
+
+    name = f"{artist} - {title}.osz"
+
+    # replace characters that are weird in filenames
+    name_sanitised = name.replace('|', '').replace('?', '')
+    
+    return name_sanitised
+
 def get_name_for_packaged_osz(slot: str) -> str:
 
     path_to_mappool = Path() / "repository" / "mappool" / "mappool.csv"
@@ -20,10 +37,10 @@ def get_name_for_packaged_osz(slot: str) -> str:
 
     name = f"{setID} {artist} - {title}.osz"
 
-    # remove characters that are weird in filenames
-    name_fixed = name.replace('?', '')
+    # more filename trial and error
+    name_sanitised = name.replace('?', '')
 
-    return name_fixed
+    return name_sanitised
 
 def get_full_title(slot: str) -> str:
 
