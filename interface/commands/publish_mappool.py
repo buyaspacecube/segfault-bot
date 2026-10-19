@@ -10,7 +10,7 @@ from repository.getters import get_slots
 
 admin_permissions = get_admin_permissions()
 
-async def generate_practice_pack(ctx):
+def generate_practice_pack():
 
     slots = get_slots()
     seed_lists = [get_practice_seeds() for s in slots]
@@ -21,8 +21,6 @@ async def generate_practice_pack(ctx):
 
         data = pack_bytes.getvalue()
         f.write(data)
-
-    await ctx.respond("Practice pack written to disk", ephemeral=True)
 
 async def send_mappool_message(ctx, practice_pack: str):
 
@@ -48,10 +46,15 @@ class PracticePack(Cog):
                                       ):
 
         if practice_pack:
+            
             await send_mappool_message(ctx, practice_pack)
 
         else:
-            await generate_practice_pack(ctx)
+            
+            await ctx.interaction.response.defer()
+            generate_practice_pack()
+            
+            await ctx.interaction.followup.send("Practice pack written to disk")
 
 # add to bot
 def setup(bot):
