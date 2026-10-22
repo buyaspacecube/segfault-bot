@@ -85,17 +85,19 @@ class CreateLobby(Cog):
     @guild_only()
     async def command_create_qualifiers(self, ctx,
                                         lobby_ID: get_lobby_ID_option(),
-                                        player1: get_player_option(1, required=True),  player2: get_player_option(2, required=False),
-                                        player3: get_player_option(3, required=False), player4: get_player_option(4, required=False),
-                                        player5: get_player_option(5, required=False), player6: get_player_option(6, required=False),
-                                        player7: get_player_option(7, required=False), player8: get_player_option(8, required=False)
+                                        player1: get_player_option(1, required=True),    player2: get_player_option(2, required=False),
+                                        player3: get_player_option(3, required=False),   player4: get_player_option(4, required=False),
+                                        player5: get_player_option(5, required=False),   player6: get_player_option(6, required=False),
+                                        player7: get_player_option(7, required=False),   player8: get_player_option(8, required=False),
+                                        player9: get_player_option(9, required=False),   player10: get_player_option(10, required=False),
+                                        player11: get_player_option(11, required=False), player12: get_player_option(12, required=False),
                                         ):
 
         referee = ctx.author
 
         lobby_title = f"Qualifiers lobby {lobby_ID}"
 
-        possible_players = [player1, player2, player3, player4, player5, player6, player7, player8]
+        possible_players = [player1, player2, player3, player4, player5, player6, player7, player8, player9, player10, player11, player12]
         players = [p for p in possible_players if p]
 
         thread_message = await create_thread(ctx, lobby_title, is_match=False, players=players, referee=referee)

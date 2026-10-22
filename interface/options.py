@@ -29,8 +29,8 @@ def get_seed_option() -> Option:
 
 def get_player_option(number: int, required: bool = True) -> Option:
 
-    if number < 1 or number > 8:
-        raise ValueError("Player number must be 1-8")
+    if number < 1:
+        raise ValueError("Player number must be 1 or larger")
 
     return Option(
         Member,
