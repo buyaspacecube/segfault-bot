@@ -78,6 +78,8 @@ class CreateLobby(Cog):
         await send_seeds_to_referee(ctx, match_title, seeds, referee)
         await send_pack_to_streamer(ctx, match_title, slots, seed_lists, streamer)
 
+    # command to create qualifiers lobby (no longer necessary)
+    """
     @create.command(
         name = "qualifiers",
         description = "(REFEREE ONLY) Start a Segfault Cup qualifiers lobby"
@@ -107,6 +109,7 @@ class CreateLobby(Cog):
         
         seeds = slots_and_seeds.values()
         await send_seeds_to_referee(ctx, lobby_title, seeds, referee)
+    """
         
 # add to bot
 def setup(bot):
