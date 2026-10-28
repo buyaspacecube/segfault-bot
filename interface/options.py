@@ -44,7 +44,8 @@ def get_streamer_option() -> Option:
     return Option(
         Member,
         name = "streamer",
-        description = "The Discord username of the streamer"
+        description = "The Discord username of the streamer",
+        required = False
     )
 
 def get_lobby_ID_option() -> Option:
