@@ -27,6 +27,15 @@ def get_seed_option() -> Option:
         description = "The seed to generate (hexadecimal from 0000 to FFFF)"
     )
 
+def get_random_seed_option() -> Option:
+
+    return Option(
+        bool,
+        name = "random_seed",
+        description = "Whether or not to generate a random seed",
+        required = False
+    )
+
 def get_player_option(number: int, required: bool = True) -> Option:
 
     if number < 1:

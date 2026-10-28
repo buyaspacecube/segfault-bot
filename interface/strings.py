@@ -5,12 +5,30 @@ from repository.getters import get_slots, get_full_title, get_beatmap_link
 def int_to_hex_string(i: int):
     return "0x" + f"{i:X}".zfill(4)
 
-def get_generated_seeds_message(seeds: list[int]) -> str:
+generated_seeds_string = "Generated seed{s} **{seeds}**"
+
+random_seed_string = """
+
+Referee, replace the seed on the ref sheet with `{seeds}`
+Streamer, download this file and restart your stable client
+"""
+
+def get_generated_seeds_message(seeds: list[int], is_random_seed: bool) -> str:
 
     str_seeds = [int_to_hex_string(seed) for seed in seeds]
-    s = "s" if len(seeds) > 1 else ""
 
-    return f"Generated seed{s} **{', '.join(str_seeds)}**"
+    message = generated_seeds_string.format(
+        s = "s" if len(seeds) > 1 else "",
+        seeds = ', '.join(str_seeds)
+    )
+
+    if is_random_seed:
+        
+        message += random_seed_string.format(
+            seeds = ', '.join(str_seeds)
+        )
+
+    return message
 
 lobby_created_string = """
 {players} your {match_or_lobby} is starting soon!

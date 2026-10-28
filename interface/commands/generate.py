@@ -1,14 +1,14 @@
 from discord import slash_command, SlashCommandGroup
 from discord.ext.commands import Cog, guild_only
 
-from interface.options import get_slot_option, get_diffs_option, get_seed_option
+from interface.options import get_slot_option, get_diffs_option, get_seed_option, get_random_seed_option
 from interface.permissions import get_base_permissions, get_referee_permissions
 from interface.strings import get_generated_seeds_message
 
 from generator.seeds import get_match_seeds, get_random_seeds
 from generator.generate_osz import generate_osz
 
-slot_option, diffs_option, seed_option = get_slot_option(), get_diffs_option(), get_seed_option()
+slot_option, diffs_option, seed_option, random_seed_option = get_slot_option(), get_diffs_option(), get_seed_option(), get_random_seed_option()
 
 base_permissions = get_base_permissions()
 referee_permissions = get_referee_permissions()
@@ -22,10 +22,10 @@ def seed_str_to_hex(seed: str) -> int:
 
     return seed_hex
 
-async def generate_and_send(ctx, slot: str, seeds: list[int], is_match: bool = False, ephemeral: bool = False):
+async def generate_and_send(ctx, slot: str, seeds: list[int], is_match: bool = False, ephemeral: bool = False, is_random_seed: bool = False):
 
     osz: File = generate_osz(slot, seeds, is_match)
-    message: str = get_generated_seeds_message(seeds)
+    message: str = get_generated_seeds_message(seeds, is_random_seed)
 
     await ctx.respond(message, file=osz, ephemeral=ephemeral)
 
@@ -44,15 +44,24 @@ class Generate(Cog):
     )
     @guild_only()
     async def command_generate(self, ctx,
-                               slot: slot_option):
+                               slot: slot_option,
+                               random_seed = random_seed_option):
 
         match_ID = ctx.channel.id
-        all_seeds = get_match_seeds(match_ID)
+        seeds: list[int] = list()
 
-        seed = all_seeds[slot]
-        seeds = [seed]
+        if random_seed:
+            
+            seeds = get_random_seeds(1)
 
-        await generate_and_send(ctx, slot, seeds, is_match=True)
+        else:
+
+            all_seeds = get_match_seeds(match_ID)
+            
+            seed = all_seeds[slot]
+            seeds = [seed]
+
+        await generate_and_send(ctx, slot, seeds, is_match=True, is_random_seed = random_seed)
 
     #
     # practice commands
