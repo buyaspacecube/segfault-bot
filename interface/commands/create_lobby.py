@@ -16,6 +16,9 @@ async def create_thread(ctx, title: str, is_match: bool, players: list[Member], 
 
     for role, member in staff.items():
 
+        if not member:
+            continue
+
         if type(member) != Member:
             raise TypeError("Input is not discord user")
 
@@ -76,7 +79,9 @@ class CreateLobby(Cog):
         ]
 
         await send_seeds_to_referee(ctx, match_title, seeds, referee)
-        await send_pack_to_streamer(ctx, match_title, slots, seed_lists, streamer)
+
+        if streamer:
+            await send_pack_to_streamer(ctx, match_title, slots, seed_lists, streamer)
 
     # command to create qualifiers lobby (no longer necessary)
     """
