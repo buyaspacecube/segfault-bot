@@ -64,7 +64,7 @@ class CreateLobby(Cog):
 
         referee = ctx.author
 
-        match_title = f"{player1.nick} vs. {player2.nick}"
+        match_title = f"{player1.display_name} vs. {player2.display_name}"
         players = [player1, player2]
 
         thread_message = await create_thread(ctx, match_title, is_match=True, players=players, referee=referee, streamer=streamer)
