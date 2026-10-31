@@ -39,7 +39,7 @@ async def send_seeds_to_referee(ctx, title: str, seeds: list[int], referee: Memb
 
 async def send_pack_to_streamer(ctx, title: str, slots: list[str], seeds: list[int], streamer: Member):
 
-    pack: File = generate_pack(slots, seeds, osu_only=True)
+    pack: File = generate_pack(slots, seeds, osu_only=True, is_match=True)
     streamer_pack_message = get_streamer_pack_message(title)
 
     await streamer.send(streamer_pack_message, file=pack)
