@@ -65,15 +65,14 @@ def get_referee_seeds_message(lobby_title: str, seeds: list[int]) -> str:
         seeds = '\n'.join(hex_seeds)
     )
 
-streamer_pack_string = """
+streamer_oszs_string = """
 Generated maps for **{lobby_title}**
-This includes .osu files ONLY! Make sure you already have the full mappool before downloading
-After downloading, restart your stable streaming client
+After downloading and importing them all, restart your stable streaming client
 """
 
-def get_streamer_pack_message(lobby_title: str) -> str:
+def get_streamer_oszs_message(lobby_title: str) -> str:
 
-    return streamer_pack_string.format(
+    return streamer_oszs_string.format(
         lobby_title = lobby_title
     )
 

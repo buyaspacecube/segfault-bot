@@ -1,12 +1,12 @@
 from discord import slash_command, SlashCommandGroup, Member, Message, File
 from discord.ext.commands import Cog, guild_only
 
-from interface.strings import get_lobby_created_message, get_referee_seeds_message, get_streamer_pack_message, int_to_hex_string
+from interface.strings import get_lobby_created_message, get_referee_seeds_message, get_streamer_oszs_message, int_to_hex_string
 from interface.options import get_player_option, get_streamer_option, get_lobby_ID_option
 from interface.permissions import get_referee_permissions
 
 from generator.seeds import get_match_seeds
-from generator.generate_pack import generate_pack
+from generator.generate_osz import generate_osz
 
 referee_permissions = get_referee_permissions()
 
@@ -37,12 +37,15 @@ async def send_seeds_to_referee(ctx, title: str, seeds: list[int], referee: Memb
     referee_seeds_message = get_referee_seeds_message(title, seeds)
     await referee.send(referee_seeds_message)
 
-async def send_pack_to_streamer(ctx, title: str, slots: list[str], seeds: list[int], streamer: Member):
+async def send_oszs_to_streamer(ctx, title: str, slots: list[str], seeds: list[int], streamer: Member):
 
-    pack: File = generate_pack(slots, seeds, osu_only=True, is_match=True)
-    streamer_pack_message = get_streamer_pack_message(title)
+    for slot, seed in zip(slots, seeds):
 
-    await streamer.send(streamer_pack_message, file=pack)
+        osz: File = generate_osz(slot, seed, is_match=True)
+        await streamer.send("", file=osz)
+
+    streamer_oszs_message = get_streamer_oszs_message(title)
+    await streamer.send(streamer_oszs_message)
 
 class CreateLobby(Cog):
 
@@ -81,7 +84,7 @@ class CreateLobby(Cog):
         await send_seeds_to_referee(ctx, match_title, seeds, referee)
 
         if streamer:
-            await send_pack_to_streamer(ctx, match_title, slots, seed_lists, streamer)
+            await send_oszs_to_streamer(ctx, match_title, slots, seed_lists, streamer)
 
     # command to create qualifiers lobby (no longer necessary)
     """
