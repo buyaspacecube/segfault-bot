@@ -1,5 +1,5 @@
 from pathlib import Path
-from pandas import read_csv
+from pandas import read_csv, isnull
 
 def get_slots() -> list[str]:
 
@@ -18,7 +18,13 @@ def get_name_for_converted_osu(slot: str, seed: int) -> str:
         ['artist', 'title']
     ].values.flatten().tolist()
 
-    name = f"{artist} - {title}"
+    name: str = str()
+
+    if isnull(artist):
+        name = title
+
+    else:
+        name = f"{artist} - {title}"
 
     # replace characters that are weird in filenames
     name_sanitised = name.replace('|', '').replace('?', '').replace('/', '')
@@ -35,7 +41,13 @@ def get_name_for_packaged_osz(slot: str) -> str:
         ['setID', 'artist', 'title']
     ].values.flatten().tolist()
 
-    name = f"{setID} {artist} - {title}.osz"
+    name: str = str()
+
+    if isnull(artist):
+        name = f"{setID} - {title}.osz"
+
+    else:
+        name = f"{setID} {artist} - {title}.osz"
 
     # more filename trial and error
     name_sanitised = name.replace('?', '').replace('/', '_')
@@ -51,6 +63,9 @@ def get_full_title(slot: str) -> str:
         mappool['slot'] == slot,
         ['artist', 'title', 'diffname']
     ].values.flatten().tolist()
+
+    if isnull(artist):
+        return f"{title} [{diffname}]"
 
     return f"{artist} - {title} [{diffname}]"
 
