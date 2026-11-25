@@ -27,7 +27,7 @@ def get_name_for_converted_osu(slot: str, seed: int) -> str:
         name = f"{artist} - {title}"
 
     # replace characters that are weird in filenames
-    name_sanitised = name.replace('|', '').replace('?', '').replace('/', '').replace(':', '')
+    name_sanitised = name.replace('|', '').replace('?', '').replace('/', '').replace(':', '').replace('"', '')
     
     return name_sanitised
 
@@ -50,7 +50,7 @@ def get_name_for_packaged_osz(slot: str) -> str:
         name = f"{setID} {artist} - {title}.osz"
 
     # more filename trial and error
-    name_sanitised = name.replace('?', '').replace('/', '_').replace(':', '')
+    name_sanitised = name.replace('?', '').replace('/', '_').replace(':', '').replace('"', '')
 
     return name_sanitised
 
