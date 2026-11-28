@@ -24,10 +24,12 @@ def seed_str_to_hex(seed: str) -> int:
 
 async def generate_and_send(ctx, slot: str, seeds: list[int], is_match: bool = False, ephemeral: bool = False, is_random_seed: bool = False):
 
+    await ctx.interaction.response.defer(ephemeral=ephemeral)
+
     osz: File = generate_osz(slot, seeds, is_match)
     message: str = get_generated_seeds_message(seeds, is_random_seed)
 
-    await ctx.respond(message, file=osz, ephemeral=ephemeral)
+    await ctx.interaction.followup.send(message, file=osz, ephemeral=ephemeral)
 
 class Generate(Cog):
 
