@@ -17,6 +17,10 @@ def _get_flipped_hitsound(hitsound_str: str) -> str:
     
     hitsound = int(hitsound_str)
 
+    # okay
+    if hitsound & HitsoundBits.CLAP and hitsound & HitsoundBits.WHISTLE:
+        return str(hitsound - HitsoundBits.CLAP - HitsoundBits.WHISTLE)
+
     if hitsound & HitsoundBits.CLAP:
         return str(hitsound - HitsoundBits.CLAP)
 
